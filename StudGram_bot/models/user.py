@@ -12,11 +12,16 @@ class User:
     role: UserRole = UserRole.STUDENT
     status: UserStatus = UserStatus.PENDING
     system_id: Optional[str] = None
+    faculty: Optional[str] = None
+    faculty_id: Optional[str] = None
     registration_date: datetime = None
     current_schedule_date: datetime = None
     schedule_view: ScheduleView = ScheduleView.DAY
     calendar_state: CalendarState = CalendarState.VIEWING
     selected_month: datetime = None
+    in_chat_mode: bool = False
+    application_approved: bool = False  
+    requires_reregistration: bool = False  
     
     def __post_init__(self):
         if self.registration_date is None:

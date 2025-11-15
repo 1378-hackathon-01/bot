@@ -13,9 +13,7 @@ class CommandHandler:
             'расписание': self._handle_schedule,
             'календарь': self._handle_calendar,
             'задания': self._handle_assignments,
-            'инфо': self._handle_info,
             'мой профиль': self._handle_profile,
-            'управление группой': self._handle_management,
             'предыдущий месяц': self._handle_calendar_prev,
             'следующий месяц': self._handle_calendar_next,
             'сегодня': self._handle_calendar_today,
@@ -47,9 +45,6 @@ class CommandHandler:
     
     async def _handle_profile(self, chat_id: int, user: User):
         await self.bot_service.send_profile(chat_id, user)
-    
-    async def _handle_management(self, chat_id: int, user: User):
-        await self.bot_service.send_group_management_info(chat_id, user)
     
     async def _handle_calendar_prev(self, chat_id: int, user: User):
         await self.bot_service.send_calendar(chat_id, user, "prev_month")

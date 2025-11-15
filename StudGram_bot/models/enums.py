@@ -2,8 +2,6 @@ from enum import Enum
 
 class UserRole(Enum):
     STUDENT = "student"
-    MODERATOR = "moderator"
-    ADMIN = "admin"
 
 class UserStatus(Enum):
     PENDING = "pending"
@@ -13,6 +11,7 @@ class UserStatus(Enum):
 class RegistrationStep(Enum):
     FULL_NAME = "full_name"
     UNIVERSITY = "university"
+    FACULTY="faculty"
     GROUP = "group"
     CONFIRMATION = "confirmation"
 

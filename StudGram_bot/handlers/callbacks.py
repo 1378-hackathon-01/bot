@@ -13,7 +13,6 @@ async def handle_callback(event, bot_service: BotService):
     logger.info(f"Callback в чате {chat_id}: '{callback_data}'")
     
     try:
-        # Прямая передача обработки в BotService
         handled = await bot_service.handle_callback(callback_data, chat_id)
         
         if not handled:

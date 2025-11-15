@@ -9,7 +9,7 @@ class CalendarService:
     def is_study_day(date: datetime) -> bool:
         """Проверяет, является ли день учебным"""
         weekday = date.weekday()
-        return weekday < 5  # Пн-Пт - учебные дни
+        return weekday < 5 
     
     @staticmethod
     def get_month_calendar(year: int, month: int) -> List[Dict]:
