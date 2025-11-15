@@ -10,7 +10,6 @@ from handlers.callbacks import handle_callback
 from models.user import User, CalendarState
 from services.university_service import UniversityService
 
-# Настройка логирования
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -18,11 +17,9 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Инициализация бота
 bot = Bot(BOT_TOKEN)
 dp = Dispatcher()
 
-# Инициализация сервисов
 bot_service = BotService(bot)
 command_handler = CommandHandler(bot_service)
 
@@ -53,6 +50,30 @@ async def message_handler(event: MessageCreated):
     active_chats[chat_id] = user_id
     
     try:
+        if user_id in users_db:
+            user = users_db[user_id]
+            if user.in_chat_mode and text.lower() not in ['меню', 'назад', '/menu']:
+                has_attachments = False
+                image_url = None
+
+                if hasattr(event.message, 'attachments') and event.message.attachments:
+                    for attachment in event.message.attachments:
+                        if hasattr(attachment, 'type') and attachment.type == "image":
+                            has_attachments = True
+                            image_url = getattr(attachment, 'url', None)
+                            break
+
+                if has_attachments and image_url:
+                    handled = await bot_service.handle_ai_message_with_image(
+                        chat_id, user, text, image_url
+                    )
+                    if handled:
+                        return
+
+                handled = await bot_service.handle_ai_message(chat_id, user, text)
+                if handled:
+                    return
+
         if user_id in pending_registrations:
             await _handle_registration(event, user_id, chat_id, text)
             return
@@ -72,14 +93,13 @@ async def message_handler(event: MessageCreated):
             'расписание': ['расписание'],
             'календарь': ['календарь', 'календарь'],
             'задания': ['задания', 'домашние задания', 'дз'],
-            'инфо': ['инфо', 'информация', 'помощь', 'справка'],
             'мой профиль': ['мой профиль', 'профиль', 'мои данные'],
-            'управление группой': ['управление группой', 'управление', 'модератор'],
             'предыдущий месяц': ['предыдущий месяц', 'пред месяц'],
             'следующий месяц': ['следующий месяц', 'след месяц'],
             'сегодня': ['сегодня', 'текущий день'],
             'назад': ['назад', 'меню'],
-            'меню': ['меню', 'главное меню']
+            'меню': ['меню', 'главное меню'],
+            'чат': ['чат', 'чат-бот', 'бот', 'ai', 'gpt']
         }
         
         matched_command = None

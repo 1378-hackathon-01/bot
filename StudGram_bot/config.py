@@ -13,7 +13,7 @@ if sys.platform == "win32":
 load_dotenv()
 
 # Константы
-API_BASE_URL = os.getenv("API_BASE_URL")
+API_BASE_URL = "https://api.studgram.ru/api"
 
 API_TOKEN = os.getenv("API_TOKEN")
 BOT_TOKEN = os.getenv("BOT_TOKEN")
@@ -23,4 +23,3 @@ OPENROUTER_TOKEN = os.getenv("OPENROUTER_TOKEN")
 users_db = {}
 pending_registrations = {}
 active_chats = {}
-moderators_db = {}
